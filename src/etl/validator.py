@@ -57,11 +57,30 @@ def check_balance_sheet(data):
 def check_operating_profit_margin(data):
     """
     Check operating profit margin against sales and operating profit.
+
+    Rows with missing values or non-positive sales are ignored because
+    OPM cannot be calculated reliably for those records.
     """
 
-    calculated_opm = (data["operating_profit"] / data["sales"]) * 100
+    valid_data = data[
+        data["sales"].notna()
+        & data["operating_profit"].notna()
+        & data["opm_percentage"].notna()
+        & (data["sales"] > 0)
+    ].copy()
 
-    difference = (calculated_opm - data["opm_percentage"]).abs()
+    if valid_data.empty:
+        return True
+
+    calculated_opm = (
+        valid_data["operating_profit"]
+        / valid_data["sales"]
+    ) * 100
+
+    difference = (
+        calculated_opm
+        - valid_data["opm_percentage"]
+    ).abs()
 
     return bool((difference <= 1).all())
 

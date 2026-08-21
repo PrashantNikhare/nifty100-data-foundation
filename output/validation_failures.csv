@@ -1,0 +1,2 @@
+rule,file,severity,status
+DQ-05,profitandloss.xlsx,WARNING,FAIL

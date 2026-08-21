@@ -15,3 +15,12 @@ def test_load_profitandloss():
     assert "company_id" in data.columns
     assert "year" in data.columns
     assert len(data) == 1276
+
+def test_load_financial_ratios():
+    data = load_excel("data/raw/financial_ratios.xlsx")
+
+    assert "id" in data.columns
+    assert "company_id" in data.columns
+    assert "year" in data.columns
+    assert "net_profit_margin_pct" in data.columns
+    assert len(data) == 1184
